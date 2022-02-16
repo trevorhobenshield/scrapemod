@@ -26,9 +26,9 @@ async def get(u: str) -> None:
 
 
 async def main():
-    urls: list = ['https://c8.alamy.com/comp/WWH9YM/siberia-husky-sled-dog-dogphoto-dog-photo-dog-photos-WWH9YM.jpg',
-                  'https://thumbs.dreamstime.com/b/french-bulldog-small-breed-domestic-dog-were-result-s-cross-ancestors-imported-england-local-136021670.jpg',
-                  'https://images.all-free-download.com/images/graphiclarge/cute_dog_photo_picture_7_168843.jpg']
+    urls = ['https://c8.alamy.com/comp/WWH9YM/siberia-husky-sled-dog-dogphoto-dog-photo-dog-photos-WWH9YM.jpg',
+            'https://thumbs.dreamstime.com/b/french-bulldog-small-breed-domestic-dog-were-result-s-cross-ancestors-imported-england-local-136021670.jpg',
+            'https://images.all-free-download.com/images/graphiclarge/cute_dog_photo_picture_7_168843.jpg']
     async with Pool(loop_initializer=uvloop.new_event_loop) as pool:
         await pool.map(get, urls)
 
