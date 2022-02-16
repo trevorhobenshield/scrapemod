@@ -12,7 +12,7 @@ class LogConstants(Enum):
     DT_FMT_ALT = '%Y.%m.%dD%H:%M:%S'
 
 
-def set_logger(filename: str):
+def set_logger(filename: str) -> None:
     if not os.path.exists('logs'):
         os.makedirs('logs')
     logging.basicConfig(
