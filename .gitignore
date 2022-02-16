@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 *.html
+/home/y/PycharmProjects/scrapemod/utils/scratch.py
