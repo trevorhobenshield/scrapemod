@@ -29,7 +29,7 @@ def main():
             'http://www.bcliquorstores.com/ajax/browse?category=beer&sort=name.raw:asc&size=24&page=4',
             'http://www.bcliquorstores.com/ajax/browse?category=beer&sort=name.raw:asc&size=24&page=5',
             'http://www.bcliquorstores.com/ajax/browse?category=beer&sort=name.raw:asc&size=24&page=6']
-    headers = '../headers/headers.txt'
+    headers = 'headers.txt'
     res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, headers) for url in urls)
     print(res)
 

@@ -24,7 +24,7 @@ def get(url: str, headers: str) -> bytearray:
 def main():
     url = 'http://www.bcliquorstores.com/ajax/browse?category=beer&sort=name.raw:asc&size=24&page=1'
 
-    headers = '../headers/headers.txt'
+    headers = 'headers.txt'
     res: bytearray = get(url, headers)
 
     # write to disk
