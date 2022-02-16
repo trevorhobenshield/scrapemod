@@ -1,0 +1,4 @@
+https://www.scrapethissite.com/pages/simple/
+https://www.scrapethissite.com/pages/forms/
+https://www.scrapethissite.com/pages/ajax-javascript/
+https://www.scrapethissite.com/pages/frames/
