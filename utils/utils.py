@@ -47,7 +47,7 @@ def get_headers(fname: str) -> dict:
                       for s in Path(fname).read_text().split('\n') if s)}
 
 
-def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]):
+def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.DataFrame:
     """
     E.g.
     
