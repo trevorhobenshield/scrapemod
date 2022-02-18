@@ -3,7 +3,9 @@ import os
 import time
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Optional,Callable
+import functools
+import pandas as pd
 
 
 class LogConstants(Enum):
@@ -43,3 +45,22 @@ def get_headers(fname: str) -> dict:
     return {t[0].lower(): t[-1].strip()
             for t in (s.partition(':')
                       for s in Path(fname).read_text().split('\n') if s)}
+
+
+def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]):
+    """
+    E.g.
+    
+    tfm(df, [
+        ['price', 'price_T', [
+            (lambda x: x.str.replace('[\$,]', '', regex=True)),
+            (lambda x: x.astype('float'))
+        ]],
+        ['date', 'date_T', [
+            (lambda x: pd.to_datetime(x))
+        ]],
+    ])
+    """
+    for col, new_col, funcs in transforms:
+        df[new_col] = functools.reduce(lambda x,f:f(x), funcs, df[col])
+    return df
