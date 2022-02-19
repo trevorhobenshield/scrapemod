@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Optional,Callable
 import functools
 import pandas as pd
+import exif
 
 
 class LogConstants(Enum):
@@ -13,6 +14,30 @@ class LogConstants(Enum):
     DT_FMT = '%Y-%m-%d %H:%M:%S'
     DT_FMT_ALT = '%Y.%m.%dD%H:%M:%S'
 
+
+class ImageCustom(exif.Image):
+    def __init__(self, img_file):
+        super().__init__(img_file)
+
+    def dirty_delete(self) -> None:
+        for _ in range(2):
+            for tag in self._segments["APP1"].get_tag_list():
+                try:
+                    self.__delattr__(tag)
+                except Exception as e:
+                    print(e)
+            self._parse_segments(self.get_file())
+
+
+def exif_strip(imgs_path: str):
+    for file in Path(imgs_path).iterdir():
+        try:
+            img = ImageCustom(Path(file).read_bytes())
+            img.dirty_delete()
+            (file.parent / f'{file.stem}_MODIFIED{file.suffix}').write_bytes(img.get_file())
+        except Exception as e:
+            print(e)
+            
 
 def set_logger(filename: str) -> None:
     if not os.path.exists('logs'):
