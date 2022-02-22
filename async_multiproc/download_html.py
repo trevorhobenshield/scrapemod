@@ -12,12 +12,13 @@ from aiohttp import request
 from aiomultiprocess import Pool
 from bs4 import BeautifulSoup
 from icecream import ic
+from utils import BASE_HEADERS
 
 ic.configureOutput(includeContext=True)
-
 nest_asyncio.apply()  # jupyter
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
+HEADERS = BASE_HEADERS  # randomly init user-agent once
 
 class LogConstants(Enum):
     FILENAME = 'MyLogs.log'
@@ -48,11 +49,6 @@ formatter = logging.Formatter(
 )
 console.setFormatter(formatter)
 logging.getLogger().addHandler(console)
-
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-}
 
 
 async def get(u: str) -> None:
