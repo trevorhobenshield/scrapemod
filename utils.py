@@ -3,10 +3,23 @@ import os
 import time
 from enum import Enum
 from pathlib import Path
-from typing import Optional,Callable
+from typing import Optional, Callable
 import functools
 import pandas as pd
 import exif
+import random
+from user_agents import USER_AGENTS
+
+BASE_HEADERS = {
+    'User-Agent': random.choice([
+        *USER_AGENTS['Chrome'],
+        *USER_AGENTS['Firefox'],
+        *USER_AGENTS['Safari'],
+        *USER_AGENTS['Edge'],
+        *USER_AGENTS['Vivaldi'],
+    ]),
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+}
 
 
 class LogConstants(Enum):
@@ -37,7 +50,7 @@ def exif_strip(imgs_path: str):
             (file.parent / f'{file.stem}_MODIFIED{file.suffix}').write_bytes(img.get_file())
         except Exception as e:
             print(e)
-            
+
 
 def set_logger(filename: str) -> None:
     if not os.path.exists('logs'):
@@ -89,5 +102,5 @@ def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.Data
     
     """
     for col, new_col, funcs in transforms:
-        df[new_col] = functools.reduce(lambda x,f:f(x), funcs, df[col])
+        df[new_col] = functools.reduce(lambda x, f: f(x), funcs, df[col])
     return df
