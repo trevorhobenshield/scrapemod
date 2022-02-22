@@ -8,7 +8,7 @@ import nest_asyncio
 import uvloop
 from bs4 import BeautifulSoup
 
-from utils.utils import set_logger, get_headers, save_html
+from utils import set_logger, get_headers, save_html
 
 nest_asyncio.apply()
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())

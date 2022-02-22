@@ -5,7 +5,7 @@ import httpx
 import joblib
 from bs4 import BeautifulSoup
 
-from utils.utils import set_logger, get_headers, save_html
+from utils import set_logger, get_headers, save_html
 
 
 def get(url: str, headers: dict, client: httpx.Client) -> any:
