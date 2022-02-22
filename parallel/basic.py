@@ -15,7 +15,7 @@ def get(url: str, headers: dict, client: httpx.Client) -> any:
         soup = BeautifulSoup(data, 'html.parser')
         return soup
     except Exception as e:
-        print(e)
+        logging.debug(f'Exception: {e} {url}')
 
 
 def main():
