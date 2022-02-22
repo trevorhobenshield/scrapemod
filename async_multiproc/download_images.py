@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import asyncio
 import logging
+
 import aiofiles
 import nest_asyncio
 import uvloop
@@ -12,6 +14,7 @@ from utils import BASE_HEADERS, set_logger
 nest_asyncio.apply()  # jupyter
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 set_logger('myLogs.log')
+
 
 async def get(u: str) -> None:
     try:
