@@ -74,6 +74,7 @@ def get_headers(fname: str) -> dict:
 
 def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.DataFrame:
     """
+    
     E.g.
     
     tfm(df, [
@@ -85,6 +86,7 @@ def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.Data
             (lambda x: pd.to_datetime(x))
         ]],
     ])
+    
     """
     for col, new_col, funcs in transforms:
         df[new_col] = functools.reduce(lambda x,f:f(x), funcs, df[col])
