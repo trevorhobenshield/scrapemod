@@ -71,14 +71,7 @@ async def get(u: str) -> None:
 
 
 async def main():
-    urls = [
-        'https://seattle.craigslist.org/search/cto?query=mercedes',
-        'https://seattle.craigslist.org/search/cto?s=120&query=mercedes',
-        'https://seattle.craigslist.org/search/cto?query=bmw',
-        'https://seattle.craigslist.org/search/cto?s=120&query=bmw',
-        'https://seattle.craigslist.org/search/cto?query=audi',
-        'https://seattle.craigslist.org/search/cto?s=120&query=audi',
-    ]
+    urls = Path('urls.txt').read_text().splitlines()
 
     async with Pool(loop_initializer=uvloop.new_event_loop) as pool:
         await pool.map(get, urls)

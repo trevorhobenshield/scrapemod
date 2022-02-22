@@ -1,4 +1,6 @@
-https://www.scrapethissite.com/pages/simple/
-https://www.scrapethissite.com/pages/forms/
-https://www.scrapethissite.com/pages/ajax-javascript/
-https://www.scrapethissite.com/pages/frames/
+https://seattle.craigslist.org/search/cto?query=mercedes
+https://seattle.craigslist.org/search/cto?s=120&query=mercedes
+https://seattle.craigslist.org/search/cto?query=bmw
+https://seattle.craigslist.org/search/cto?s=120&query=bmw
+https://seattle.craigslist.org/search/cto?query=audi
+https://seattle.craigslist.org/search/cto?s=120&query=audi

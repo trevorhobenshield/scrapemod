@@ -1,28 +1,33 @@
+from __future__ import annotations
 import asyncio
-import nest_asyncio
-from aiohttp import request
+import logging
 import aiofiles
-from aiomultiprocess import Pool
+import nest_asyncio
 import uvloop
+from aiohttp import request
+from aiomultiprocess import Pool
 
-nest_asyncio.apply()
+from utils import BASE_HEADERS, set_logger
+
+nest_asyncio.apply()  # jupyter
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-}
-
+set_logger('myLogs.log')
 
 async def get(u: str) -> None:
-    async with request('GET', u, headers=HEADERS) as r:
-        print('GET', u)
-        if r.status == 200:
-            filename = u.split('/')[-1]  # modify this as needed
-            async with aiofiles.open(filename, 'wb') as f:
-                await f.write(await r.read())
-        else:
-            print(f'\u001b[31m Error:{r.status}\t{u}\u001b[0m')
+    try:
+        async with request((method := 'GET'), u, headers=BASE_HEADERS) as r:
+            logging.debug(f'{r.status} {method} {u}')
+            if r.status == 200:
+                filename = u.split('/')[-1]  # modify this as needed
+                try:
+                    async with aiofiles.open(filename, 'wb') as f:
+                        await f.write(await r.read())
+                except Exception as e:
+                    logging.debug(f'Exception: {e} {u}')
+            else:
+                logging.debug(f'{r.status = } {u}')
+    except Exception as e:
+        logging.debug(f'Exception: {e} {u}')
 
 
 async def main():
@@ -34,5 +39,6 @@ async def main():
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(main())

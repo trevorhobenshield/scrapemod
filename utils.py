@@ -8,6 +8,9 @@ import functools
 import pandas as pd
 import exif
 import random
+
+from bs4 import BeautifulSoup
+
 from user_agents import USER_AGENTS
 
 BASE_HEADERS = {
@@ -20,6 +23,11 @@ BASE_HEADERS = {
     ]),
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
 }
+
+
+class Dirs(Enum):
+    DATA = Path('data')
+    LOGS = Path('logs')
 
 
 class LogConstants(Enum):
@@ -69,17 +77,17 @@ def set_logger(filename: str) -> None:
     logging.getLogger().addHandler(console)
 
 
-def save_html(data: list, filename: Optional[str] = None) -> None:
-    out_path = Path('out')
-    if not os.path.exists(out_path):
-        os.makedirs(out_path)
+def save_html(soup: BeautifulSoup, filename: Optional[str] = None) -> None:
+    os.makedirs(Dirs.DATA.value) if not os.path.exists(Dirs.DATA.value) else ...
     name = f'{filename}-' if filename else ''
-    for soup in data:
-        with open(out_path / f"{name}{time.time_ns()}.html", 'w', encoding='utf-8') as fw:
-            fw.write(soup.prettify())
+    with open(Dirs.DATA.value / f"{name}{time.time_ns()}.html", 'w', encoding='utf-8') as fw:
+        fw.write(soup.prettify())
 
 
 def get_headers(fname: str) -> dict:
+    """
+    Parse headers directly copied from dev tools.
+    """
     return {t[0].lower(): t[-1].strip()
             for t in (s.partition(':')
                       for s in Path(fname).read_text().split('\n') if s)}
@@ -87,9 +95,11 @@ def get_headers(fname: str) -> dict:
 
 def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.DataFrame:
     """
-    
-    E.g.
-    
+    Apply n functions to k columns of a DataFrame
+
+    -----------------------------------------------------------------
+    Example:
+    -----------------------------------------------------------------
     tfm(df, [
         ['price', 'price_T', [
             (lambda x: x.str.replace('[\$,]', '', regex=True)),
@@ -99,7 +109,6 @@ def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.Data
             (lambda x: pd.to_datetime(x))
         ]],
     ])
-    
     """
     for col, new_col, funcs in transforms:
         df[new_col] = functools.reduce(lambda x, f: f(x), funcs, df[col])
