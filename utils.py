@@ -95,7 +95,7 @@ def get_headers(fname: str) -> dict:
 
 def tfm(df: pd.DataFrame, transforms: list[list[str, str, Callable]]) -> pd.DataFrame:
     """
-    Apply n functions to k columns of a DataFrame
+    Apply n transformations to k columns of a DataFrame
 
     -----------------------------------------------------------------
     Example:
