@@ -7,22 +7,7 @@ from typing import Optional, Callable
 import functools
 import pandas as pd
 import exif
-import random
-
 from bs4 import BeautifulSoup
-
-from user_agents import USER_AGENTS
-
-BASE_HEADERS = {
-    'User-Agent': random.choice([
-        *USER_AGENTS['Chrome'],
-        *USER_AGENTS['Firefox'],
-        *USER_AGENTS['Safari'],
-        *USER_AGENTS['Edge'],
-        *USER_AGENTS['Vivaldi'],
-    ]),
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-}
 
 
 class Dirs(Enum):
