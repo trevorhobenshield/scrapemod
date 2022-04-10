@@ -7,7 +7,7 @@ import nest_asyncio
 import uvloop
 from bs4 import BeautifulSoup
 
-from utils import set_logger, BASE_HEADERS, save_html
+from utils import set_logger, get_headers, save_html
 
 nest_asyncio.apply()
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -32,7 +32,7 @@ def main():
     set_logger('myLog.log')
     urls = Path('urls.txt').read_text().splitlines()
     loop = asyncio.get_event_loop()
-    res = loop.run_until_complete(process_requests(urls, BASE_HEADERS))
+    res = loop.run_until_complete(process_requests(urls, get_headers('headers.txt')))
     [save_html(r) for r in res]
 
 
