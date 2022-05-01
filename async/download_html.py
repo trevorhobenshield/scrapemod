@@ -18,7 +18,12 @@ async def get(url: str, session: aiohttp.ClientSession) -> BeautifulSoup:
         logging.debug(f"Downloading: {url}")
         response = await session.request(method='GET', url=url)
         data = await response.text()
-        return BeautifulSoup(data, 'html.parser')
+        soup = BeautifulSoup(data)
+        p = soup.new_tag('p', id='scrape_url')
+        p.string = url
+        soup.html.body.insert(0, p)
+        save_html(soup)
+        return soup
     except Exception as e:
         print(e)
 
