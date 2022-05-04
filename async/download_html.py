@@ -38,7 +38,7 @@ def main():
     urls = Path('urls.txt').read_text().splitlines()
     loop = asyncio.get_event_loop()
     res = loop.run_until_complete(process_requests(urls, get_headers('headers.txt')))
-    [save_html(r) for r in res]
+
 
 
 if __name__ == '__main__':
