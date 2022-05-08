@@ -16,31 +16,27 @@ set_logger('myLogs.log')
 
 
 async def get(url: str) -> None:
-    try:
-        async with request((method := 'GET'), url, headers=HEADERS) as r:
-            logging.debug(f'{r.status} {method} {url}')
-            if r.status == 200:
+    async with request(method := 'GET', url, headers=HEADERS) as r:
+        logging.debug(f'{r.status} {method} {url}')
+        if r.status in {200, 418}:
+            try:
                 fname = hashlib.md5(url.encode("utf-8")).hexdigest()
-                try:
-                    async with aiofiles.open(fname, 'wb') as f:
-                        await f.write(await r.read())
-                except Exception as e:
-                    logging.debug(f'Exception: {e} {url}')
-            else:
-                logging.debug(f'{r.status = } {url}')
-    except Exception as e:
-        logging.debug(f'Exception: {e} {url}')
+                async with aiofiles.open(fname, 'wb') as fw:
+                    await fw.write(await r.read())
+            except Exception as e:
+                logging.debug(f'Exception: {e}')
 
 
 async def main():
     urls = ['https://c8.alamy.com/comp/WWH9YM/siberia-husky-sled-dog-dogphoto-dog-photo-dog-photos-WWH9YM.jpg',
             'https://thumbs.dreamstime.com/b/french-bulldog-small-breed-domestic-dog-were-result-s-cross-ancestors-imported-england-local-136021670.jpg',
             'https://images.all-free-download.com/images/graphiclarge/cute_dog_photo_picture_7_168843.jpg']
+
     async with Pool(loop_initializer=uvloop.new_event_loop) as pool:
         await pool.map(get, urls)
 
 
-#todo cannot convert to notebook, must run this .py file
+# todo cannot convert to notebook, must run this .py file
 if __name__ == '__main__':
     asyncio.run(main())
     # loop = asyncio.get_event_loop()
