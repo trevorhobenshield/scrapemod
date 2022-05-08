@@ -1,36 +1,35 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 
 import aiofiles
-import nest_asyncio
 import uvloop
 from aiohttp import request
 from aiomultiprocess import Pool
 
-from utils import set_logger
+from utils import set_logger, get_headers
 
-nest_asyncio.apply()  # jupyter
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+HEADERS = get_headers('headers.txt')
 set_logger('myLogs.log')
 
 
-async def get(u: str) -> None:
+async def get(url: str) -> None:
     try:
-        async with request((method := 'GET'), u, headers=BASE_HEADERS) as r:
-            logging.debug(f'{r.status} {method} {u}')
+        async with request((method := 'GET'), url, headers=HEADERS) as r:
+            logging.debug(f'{r.status} {method} {url}')
             if r.status == 200:
-                filename = u.split('/')[-1]  # modify this as needed
+                fname = hashlib.md5(url.encode("utf-8")).hexdigest()
                 try:
-                    async with aiofiles.open(filename, 'wb') as f:
+                    async with aiofiles.open(fname, 'wb') as f:
                         await f.write(await r.read())
                 except Exception as e:
-                    logging.debug(f'Exception: {e} {u}')
+                    logging.debug(f'Exception: {e} {url}')
             else:
-                logging.debug(f'{r.status = } {u}')
+                logging.debug(f'{r.status = } {url}')
     except Exception as e:
-        logging.debug(f'Exception: {e} {u}')
+        logging.debug(f'Exception: {e} {url}')
 
 
 async def main():

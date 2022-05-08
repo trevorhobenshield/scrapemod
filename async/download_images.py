@@ -18,8 +18,8 @@ async def download_image(url: str, session: aiohttp.ClientSession):
         logging.debug(f"Downloading: {url}")
         res = await session.request(method='GET', url=url)
         dat = await res.read()
-        unique_filename = hashlib.md5(url.encode("utf-8")).hexdigest()
-        async with aiofiles.open(f'{unique_filename}.png', 'wb') as fw:
+        fname = hashlib.md5(url.encode("utf-8")).hexdigest()
+        async with aiofiles.open(f'{fname}.png', 'wb') as fw:
             await fw.write(dat)
     except Exception as e:
         print(e)
