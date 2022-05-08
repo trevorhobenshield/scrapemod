@@ -37,7 +37,6 @@ async def get(u: str) -> None:
 
 async def main():
     urls = Path('urls.txt').read_text().splitlines()
-
     async with Pool(loop_initializer=uvloop.new_event_loop) as pool:
         await pool.map(get, urls)
 
