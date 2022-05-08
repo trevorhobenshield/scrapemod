@@ -9,8 +9,12 @@ from utils import set_logger, save_html, get_headers
 
 def get(url: str, headers: dict, session: requests.Session) -> any:
     try:
-        data = session.get(url=url, headers=headers).content
-        soup = BeautifulSoup(data, 'html.parser')
+        dat = session.get(url=url, headers=headers).content
+        soup = BeautifulSoup(dat)
+        p = soup.new_tag('p', id='scrape_url')
+        p.string = url
+        soup.html.body.insert(0, p)
+        save_html(soup)
         return soup
     except Exception as e:
         logging.debug(f'Exception: {e} {url}')

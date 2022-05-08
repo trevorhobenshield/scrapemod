@@ -15,24 +15,24 @@ set_logger('downloaded_html.log')
 HEADERS = get_headers('headers.txt')
 
 
-async def get(u: str) -> None:
+async def get(url: str) -> None:
     try:
-        async with request(method := 'GET', u, headers=HEADERS) as r:
-            logging.debug(f'{r.status} {method} {u}')
+        async with request(method := 'GET', url, headers=HEADERS) as r:
+            logging.debug(f'{r.status} {method} {url}')
             if r.status == 200:
                 try:
-                    data = await r.text("utf-8")
-                    soup = BeautifulSoup(data, 'html.parser')
+                    dat = await r.text("utf-8")
+                    soup = BeautifulSoup(dat)
                     p = soup.new_tag('p', id='scrape_url')
-                    p.string = u
+                    p.string = url
                     soup.html.body.insert(0, p)
                     save_html(soup)
                 except Exception as e:
-                    logging.debug(f'Exception: {e} {u}')
+                    logging.debug(f'Exception: {e} {url}')
             else:
-                logging.debug(f'{r.status = } {u}')
+                logging.debug(f'{r.status = } {url}')
     except Exception as e:
-        logging.debug(f'Exception: {e} {u}')
+        logging.debug(f'Exception: {e} {url}')
 
 
 async def main():

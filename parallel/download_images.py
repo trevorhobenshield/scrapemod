@@ -1,5 +1,6 @@
 import hashlib
 import logging
+from pathlib import Path
 
 import joblib
 import requests
@@ -7,12 +8,10 @@ import requests
 from utils import set_logger
 
 
-def get(url: str, headers: dict, session: requests.Session) -> any:
+def get(url: str, headers: dict, session: requests.Session):
     try:
-        dat = session.get(url=url, headers=headers).content
-        unique_filename = hashlib.md5(url.encode("utf-8")).hexdigest()
-        with open(f'{unique_filename}.png', 'wb') as fw:
-            fw.write(dat)
+        fname = hashlib.md5(url.encode("utf-8")).hexdigest()
+        Path(f'{fname}.png').write_bytes(session.get(url=url, headers=headers).content)
     except Exception as e:
         logging.debug(f'Exception: {e} {url}')
 
