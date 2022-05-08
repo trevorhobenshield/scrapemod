@@ -40,6 +40,7 @@ async def main():
         await pool.map(get, urls)
 
 
+#todo cannot convert to notebook, must run this .py file
 if __name__ == '__main__':
     asyncio.run(main())
     # loop = asyncio.get_event_loop()
