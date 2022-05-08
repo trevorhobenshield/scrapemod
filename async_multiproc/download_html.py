@@ -4,29 +4,29 @@ import asyncio
 import logging
 from pathlib import Path
 
-import nest_asyncio
 import uvloop
 from aiohttp import request
 from aiomultiprocess import Pool
 from bs4 import BeautifulSoup
 
-from utils import save_html, set_logger
+from utils import save_html, set_logger, get_headers
 
-nest_asyncio.apply()  # jupyter
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-set_logger('downloaded_webpages.log')
+set_logger('downloaded_html.log')
+HEADERS = get_headers('headers.txt')
 
 
 async def get(u: str) -> None:
-    """
-    save data on the fly
-    """
     try:
-        async with request((method := 'GET'), u, headers=BASE_HEADERS) as r:
+        async with request(method := 'GET', u, headers=HEADERS) as r:
             logging.debug(f'{r.status} {method} {u}')
             if r.status == 200:
                 try:
-                    save_html(BeautifulSoup(await r.text("utf-8"), 'html.parser'))
+                    data = await r.text("utf-8")
+                    soup = BeautifulSoup(data, 'html.parser')
+                    p = soup.new_tag('p', id='scrape_url')
+                    p.string = u
+                    soup.html.body.insert(0, p)
+                    save_html(soup)
                 except Exception as e:
                     logging.debug(f'Exception: {e} {u}')
             else:
