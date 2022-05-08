@@ -16,8 +16,8 @@ async def get(url: str, session: aiohttp.ClientSession) -> BeautifulSoup:
     try:
         logging.debug(f'Downloading: {url}')
         response = await session.request(method='GET', url=url)
-        data = await response.text()
-        soup = BeautifulSoup(data)
+        dat = await response.text()
+        soup = BeautifulSoup(dat)
         p = soup.new_tag('p', id='scrape_url')
         p.string = url
         soup.html.body.insert(0, p)
