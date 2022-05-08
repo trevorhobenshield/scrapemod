@@ -24,7 +24,7 @@ async def get(url: str) -> None:
                 async with aiofiles.open(fname, 'wb') as fw:
                     await fw.write(await r.read())
             except Exception as e:
-                logging.debug(f'Exception: {e}')
+                logging.debug(f'Exception: {e} {url}')
 
 
 async def main():
