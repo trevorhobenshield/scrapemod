@@ -9,7 +9,7 @@ import uvloop
 from aiohttp import request
 from aiomultiprocess import Pool
 
-from utils import BASE_HEADERS, set_logger
+from utils import set_logger
 
 nest_asyncio.apply()  # jupyter
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())

@@ -17,7 +17,7 @@ def get(url: str, headers: dict, session: requests.Session) -> any:
 
 
 def main():
-    set_logger('mylog.log')
+    set_logger('downloaded_webpages.log')
     urls = Path('urls.txt').read_text().splitlines()
     session = requests.Session()
     res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, get_headers('headers.txt'), session) for url in urls)

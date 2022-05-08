@@ -33,7 +33,7 @@ async def process_requests(urls: list, headers: dict) -> list:
 
 
 def main():
-    set_logger('myLog.log')
+    set_logger('downloaded_webpages.log')
     urls: list[str] = Path('urls.txt').read_text().splitlines()
     loop = asyncio.get_event_loop()
     res: list[BeautifulSoup] = loop.run_until_complete(process_requests(urls, get_headers('headers.txt')))

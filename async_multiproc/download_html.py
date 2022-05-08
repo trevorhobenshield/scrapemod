@@ -10,11 +10,11 @@ from aiohttp import request
 from aiomultiprocess import Pool
 from bs4 import BeautifulSoup
 
-from utils import BASE_HEADERS, save_html, set_logger
+from utils import save_html, set_logger
 
 nest_asyncio.apply()  # jupyter
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-set_logger('myLogs.log')
+set_logger('downloaded_webpages.log')
 
 
 async def get(u: str) -> None:

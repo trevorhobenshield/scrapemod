@@ -1,8 +1,8 @@
-from pathlib import Path
+import asyncio
 import hashlib
 import logging
+
 import aiofiles
-import asyncio
 import aiohttp
 import nest_asyncio
 import uvloop
@@ -32,7 +32,9 @@ async def process_requests(urls: list[str], headers: dict):
 
 def main():
     set_logger('downloaded_images.log')
-    urls: list[str] = Path('urls.txt').read_text().splitlines()
+    urls = ['https://c8.alamy.com/comp/WWH9YM/siberia-husky-sled-dog-dogphoto-dog-photo-dog-photos-WWH9YM.jpg',
+            'https://thumbs.dreamstime.com/b/french-bulldog-small-breed-domestic-dog-were-result-s-cross-ancestors-imported-england-local-136021670.jpg',
+            'https://images.all-free-download.com/images/graphiclarge/cute_dog_photo_picture_7_168843.jpg']
     loop = asyncio.get_event_loop()
     loop.run_until_complete(process_requests(urls, get_headers('headers.txt')))
 
