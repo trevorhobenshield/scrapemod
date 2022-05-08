@@ -18,7 +18,7 @@ HEADERS = get_headers('headers.txt')
 async def get(url: str) -> None:
     async with request(method := 'GET', url, headers=HEADERS) as r:
         logging.debug(f'{r.status} {method} {url}')
-        if r.status == 200:
+        if r.status in {200, 418}:
             try:
                 dat = await r.text("utf-8")
                 soup = BeautifulSoup(dat)
