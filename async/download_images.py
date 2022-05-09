@@ -9,11 +9,11 @@ import uvloop
 
 from utils import set_logger, get_headers
 
-nest_asyncio.apply()  # needed if running in notebook
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())  # modified event loop
+nest_asyncio.apply()
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 
-async def download_image(url: str, session: aiohttp.ClientSession):
+async def get(url: str, session: aiohttp.ClientSession):
     try:
         logging.debug(f"Downloading: {url}")
         res = await session.request(method='GET', url=url)
@@ -27,7 +27,7 @@ async def download_image(url: str, session: aiohttp.ClientSession):
 
 async def process_requests(urls: list[str], headers: dict):
     async with aiohttp.ClientSession(headers=headers) as s:
-        await asyncio.gather(*(download_image(u, s) for u in urls))
+        await asyncio.gather(*(get(u, s) for u in urls))
 
 
 def main():

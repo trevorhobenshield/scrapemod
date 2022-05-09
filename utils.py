@@ -62,12 +62,18 @@ def set_logger(filename: str) -> None:
     logging.getLogger().addHandler(console)
 
 
-def save_html(soup: BeautifulSoup, filename: Optional[str] = None) -> None:
+def save_soup(soup: BeautifulSoup, filename: Optional[str] = None) -> None:
     os.makedirs(Dirs.DATA.value) if not os.path.exists(Dirs.DATA.value) else ...
     name = f'{filename}-' if filename else ''
     with open(Dirs.DATA.value / f"{name}{time.time_ns()}.html", 'w', encoding='utf-8') as fw:
         fw.write(soup.prettify())
 
+
+def tag_soup(soup:BeautifulSoup, url:str) -> BeautifulSoup:
+    p = soup.new_tag('p', id='scrape_url')
+    p.string = url
+    soup.html.body.insert(0, p)
+    return soup
 
 def get_headers(fname: str) -> dict:
     """

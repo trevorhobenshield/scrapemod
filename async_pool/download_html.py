@@ -9,7 +9,7 @@ from aiohttp import request
 from aiomultiprocess import Pool
 from bs4 import BeautifulSoup
 
-from utils import save_html, set_logger, get_headers
+from utils import save_soup, set_logger, get_headers, tag_soup
 
 set_logger('downloaded_html.log')
 HEADERS = get_headers('headers.txt')
@@ -21,11 +21,8 @@ async def get(url: str) -> None:
         if r.status in {200, 418}:
             try:
                 dat = await r.text("utf-8")
-                soup = BeautifulSoup(dat)
-                p = soup.new_tag('p', id='scrape_url')
-                p.string = url
-                soup.html.body.insert(0, p)
-                save_html(soup)
+                soup = tag_soup(BeautifulSoup(dat), url)
+                save_soup(soup)
             except Exception as e:
                 logging.debug(f'Exception: {e} {url}')
 

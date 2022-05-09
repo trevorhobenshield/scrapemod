@@ -6,10 +6,10 @@ import uvloop
 import nest_asyncio
 from bs4 import BeautifulSoup
 
-from utils import set_logger, get_headers, save_html
+from utils import set_logger, get_headers, save_soup, tag_soup
 
-nest_asyncio.apply()  # needed if running in notebook
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())  # modified event loop
+nest_asyncio.apply()
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 
 async def get(url: str, session: aiohttp.ClientSession) -> BeautifulSoup:
@@ -17,11 +17,8 @@ async def get(url: str, session: aiohttp.ClientSession) -> BeautifulSoup:
         logging.debug(f'Downloading: {url}')
         response = await session.request(method='GET', url=url)
         dat = await response.text()
-        soup = BeautifulSoup(dat)
-        p = soup.new_tag('p', id='scrape_url')
-        p.string = url
-        soup.html.body.insert(0, p)
-        save_html(soup)  # save html to data/*.html
+        soup = tag_soup(BeautifulSoup(dat), url)
+        save_soup(soup)
         return soup
     except Exception as e:
         print(e)
