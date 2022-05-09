@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 import requests
-import joblib
+from joblib import Parallel, delayed
 from bs4 import BeautifulSoup
 
 from utils import set_logger, save_html, get_headers
@@ -25,7 +25,7 @@ def main():
     urls = Path('urls.txt').read_text().splitlines()
     session = requests.Session()
     headers = get_headers('headers.txt')
-    res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, headers, session) for url in urls)
+    res = Parallel(n_jobs=-1, prefer='threads')(delayed(get)(url, headers, session) for url in urls)
 
 
 
