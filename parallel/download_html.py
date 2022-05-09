@@ -24,7 +24,8 @@ def main():
     set_logger('downloaded_html.log')
     urls = Path('urls.txt').read_text().splitlines()
     session = requests.Session()
-    res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, get_headers('headers.txt'), session) for url in urls)
+    headers = get_headers('headers.txt')
+    res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, headers, session) for url in urls)
 
 
 
