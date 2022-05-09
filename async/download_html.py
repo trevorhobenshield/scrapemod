@@ -24,7 +24,7 @@ async def get(url: str, session: aiohttp.ClientSession) -> BeautifulSoup:
         print(e)
 
 
-async def process_requests(urls: list, headers: dict) -> list:
+async def process_requests(urls: list[str], headers: dict) -> list:
     async with aiohttp.ClientSession(headers=headers) as s:
         return await asyncio.gather(*(get(u, s) for u in urls))
 

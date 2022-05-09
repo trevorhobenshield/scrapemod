@@ -1,11 +1,9 @@
 import hashlib
 import logging
 from pathlib import Path
-
-import joblib
+from joblib import Parallel, delayed
 import requests
-
-from utils import set_logger
+from utils import set_logger, get_headers
 
 
 def get(url: str, headers: dict, session: requests.Session):
@@ -18,11 +16,14 @@ def get(url: str, headers: dict, session: requests.Session):
 
 def main():
     set_logger('downloaded_images.log')
+
     urls = ['https://c8.alamy.com/comp/WWH9YM/siberia-husky-sled-dog-dogphoto-dog-photo-dog-photos-WWH9YM.jpg',
             'https://thumbs.dreamstime.com/b/french-bulldog-small-breed-domestic-dog-were-result-s-cross-ancestors-imported-england-local-136021670.jpg',
             'https://images.all-free-download.com/images/graphiclarge/cute_dog_photo_picture_7_168843.jpg']
+
     session = requests.Session()
-    joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, {}, session) for url in urls)
+    headers = get_headers('headers.txt')
+    Parallel(n_jobs=-1, prefer='threads')(delayed(get)(url, headers, session) for url in urls)
 
 
 if __name__ == '__main__':
