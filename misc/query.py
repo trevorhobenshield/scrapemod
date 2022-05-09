@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 import pandas as pd
 
-DATA_PATH = Path()
+DATA_PATH = Path('data')
 
 df = pd.concat([pd.read_parquet(d)for d in[f for f in DATA_PATH.iterdir()if'.parquet'in f.suffix]])
 
