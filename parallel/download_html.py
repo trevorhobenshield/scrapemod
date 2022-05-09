@@ -25,7 +25,7 @@ def main():
     urls = Path('urls.txt').read_text().splitlines()
     session = requests.Session()
     res = joblib.Parallel(n_jobs=-1, prefer='threads')(joblib.delayed(get)(url, get_headers('headers.txt'), session) for url in urls)
-    [save_html(r) for r in res]
+
 
 
 if __name__ == '__main__':
