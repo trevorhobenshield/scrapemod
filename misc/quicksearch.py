@@ -1,0 +1,1 @@
+from webbrowser import open_new_tab as o;q='sedenion-valued MLP';(h:='https://');[o(_)for _ in[f'{_}{q}'for _ in[f'{h}baidu.com/s?wd=',f'{h}yandex.ru/search?text=',f'{h}bing.com/search?q=',f'{h}google.com/search?q=',f'{h}search.yahoo.com/search?p=',f'{h}duckduckgo.com/?q=']]];
